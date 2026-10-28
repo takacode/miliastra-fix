@@ -1,0 +1,16 @@
+{
+  "name": "miliastra-fix",
+  "version": "0.3.0",
+  "private": true,
+  "type": "module",
+  "description": "Local browser repairs for Miliastra graph variables in GIL and GIA files.",
+  "scripts": {
+    "dev": "node tools/serve.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "test:browser": "node tools/browser-check.mjs",
+    "build": "node tools/build.mjs",
+    "verify:files": "node tools/check-files.mjs"
+  },
+  "engines": { "node": ">=22" },
+  "license": "MIT"
+}

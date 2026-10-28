@@ -1,0 +1,7 @@
+dist/
+node_modules/
+.artifacts/
+*.log
+.DS_Store
+*.gil
+*.gia

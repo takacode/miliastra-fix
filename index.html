@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f7f9">
+  <meta name="description" content="Inspect Miliastra GIL and GIA graph variables, review targeted repairs, and download a patched copy. Files stay in your browser.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>Miliastra Fix · File workbench</title>
+  <link rel="icon" href="./mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./style.css">
+  <script type="module" src="./src/app.mjs"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to workspace</a>
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="Miliastra Fix home"><img src="./mark.svg" width="36" height="36" alt=""><span>miliastra<span class="brand-fix">fix</span><small>CREATOR FILE WORKBENCH</small></span></a>
+    <div class="top-actions"><span class="local-indicator"><i></i> Files stay on your device</span><span class="version">v0.3 · workbench</span><button class="icon-button" id="about" aria-label="About this tool and supported operations">?</button></div>
+  </header>
+  <div class="workspace">
+    <aside class="sidebar" aria-label="File and graphs">
+      <div class="section-label">WORKSPACE <span>01</span></div>
+      <button class="open-button" id="open"><span aria-hidden="true">＋</span> Open stage or asset</button>
+      <input id="file" type="file" accept=".gil,.gia" hidden>
+      <input id="compare-file" type="file" accept=".gil,.gia" hidden>
+      <input id="plan-file" type="file" accept=".json" hidden>
+      <div id="file-card" class="file-card"><span class="file-icon" aria-hidden="true">↳</span><span>No file open<small>.gil or .gia · up to 32 MB</small></span></div>
+      <div class="graph-section" id="graph-section" hidden><div class="file-tools"><button class="text-button" id="compare-open">Compare files</button><button class="text-button" id="import-plan">Import plan</button></div><button id="all-findings" class="overview-button">◎ <span>All findings</span><span id="all-count">0</span></button><div class="section-label">GRAPHS <span id="graph-count">0</span></div><label class="search-box"><span aria-hidden="true">⌕</span><input id="graph-search" type="search" placeholder="Graph or variable name…" aria-label="Find a graph or variable"></label><label class="sr-only" for="graph-kind">Graph category</label><select id="graph-kind" class="compact-select"><option value="owners">Owner graphs</option><option value="all">All graphs</option><option value="composites">Composite bodies</option></select><nav id="graphs" aria-label="Graph selection"></nav></div>
+      <div class="sidebar-bottom"><span class="shield" aria-hidden="true">◇</span><div>Your file stays yours.<p>No uploads. No account.<br>A new copy for every export.</p></div></div>
+    </aside>
+    <main id="main" tabindex="-1">
+      <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+      <button id="cancel-work" class="text-button cancel-work" hidden>Cancel operation</button>
+      <section id="welcome" class="welcome">
+        <div class="eyebrow"><span></span> MADE FOR MILIASTRA CREATORS</div>
+        <h1>Less fixing by hand.<br>More time creating.</h1>
+        <p class="intro">Trace variables through composite graphs. Repair declarations, refactor names, and tune initial values—with every change visible before export.</p>
+        <button id="drop-open" class="drop-zone"><span class="upload-symbol" aria-hidden="true">↥</span><strong>Drop your .gil or .gia here</strong><span>or click to browse your files</span><small>Processed on your device · Original file preserved</small></button>
+        <div class="demo-row"><span>Just looking around?</span><button id="demo" class="text-button">Try the interactive demo <span aria-hidden="true">↗</span></button></div>
+        <div class="how-it-works"><article><span>01</span><h2>Inspect</h2><p>Follow variable references through graphs and composites.</p></article><article><span>02</span><h2>Review</h2><p>Repair, rename or edit a value. Review changes together.</p></article><article><span>03</span><h2>Export</h2><p>Compare the validated copy and download your patch.</p></article></div>
+        <p class="compatibility">Entity scalar edits tested in editor 7.1. Other runtime scopes remain pending. <button class="text-button" id="scope-link">See supported operations</button></p>
+      </section>
+      <section id="inspection" hidden>
+        <div class="breadcrumb">FILE INSPECTION <span>/</span> <span id="format-label">GIA</span></div>
+        <div class="page-heading"><div><h1 id="stage-name">Your workspace</h1><p id="stage-summary"></p></div><span id="demo-badge" class="pill" hidden>Synthetic demo</span></div>
+        <div id="metrics" class="metrics"></div>
+        <div class="workspace-toolbar"><label class="issue-search"><span aria-hidden="true">⌕</span><input id="issue-search" type="search" placeholder="Search names, nodes, findings…" aria-label="Search findings and variables"></label><button id="batch-review" class="secondary">Review repairs</button></div>
+        <div class="graph-heading"><div><span class="section-label">SELECTED GRAPH</span><h2 id="graph-name"></h2></div><span class="pill" id="graph-source"></span></div>
+        <div id="blockers"></div>
+        <div class="tabs" role="tablist" aria-label="Graph view"><button role="tab" aria-selected="true" aria-controls="findings-panel" id="tab-findings" tabindex="0">Findings <span id="findings-count">0</span></button><button role="tab" aria-selected="false" aria-controls="variables-panel" id="tab-variables" tabindex="-1">Variables <span id="variables-count">0</span></button><button role="tab" aria-selected="false" aria-controls="dependencies-panel" id="tab-dependencies" tabindex="-1">Dependencies</button></div>
+        <div id="finding-filters" class="filter-row" role="group" aria-label="Filter findings"><button class="filter active" data-filter="all" aria-pressed="true">All</button><button class="filter" data-filter="repairable" aria-pressed="false">Can repair</button><button class="filter" data-filter="review" aria-pressed="false">Needs review</button><button class="filter" data-filter="info" aria-pressed="false">Information</button></div>
+        <div id="findings-panel" role="tabpanel" aria-labelledby="tab-findings" tabindex="0"></div>
+        <div id="variables-panel" role="tabpanel" aria-labelledby="tab-variables" tabindex="0" hidden></div>
+        <div id="dependencies-panel" role="tabpanel" aria-labelledby="tab-dependencies" tabindex="0" hidden></div>
+        <p class="scan-note" id="scan-note">Composite references are traced in their caller’s scope. Runtime-computed names stay unresolved.</p>
+      </section>
+    </main>
+    <aside class="plan-panel" aria-label="Patch plan">
+      <div class="plan-title"><h2>Change plan</h2><span id="plan-count">0</span></div>
+      <p class="plan-intro">Your changes, before they touch a file.</p>
+      <div class="history-controls"><button id="undo" class="text-button" disabled aria-label="Undo change plan edit">↶ Undo</button><button id="redo" class="text-button" disabled aria-label="Redo change plan edit">Redo ↷</button><button id="export-plan" class="text-button" disabled>Save plan</button></div>
+      <div id="plan-list" class="plan-list"><div class="empty-plan"><span aria-hidden="true">≡</span><h3>A clean slate</h3><p>Reviewed repairs and renames will appear here.</p></div></div>
+      <div id="export-result" hidden></div>
+      <div class="plan-bottom"><div class="plan-total"><span>Reviewed changes</span><strong id="pending-total">0</strong></div><button class="primary" id="build" disabled>Validate & build export <span aria-hidden="true">→</span></button><button class="text-button clear-plan" id="clear-plan" disabled>Clear changes</button><p>Separate download. Original preserved.<br><span id="file-fingerprint">No file loaded</span></p></div>
+    </aside>
+  </div>
+  <footer><span>Small, deliberate changes.</span><div><a href="./README.md" target="_blank" rel="noopener">Documentation ↗</a><a href="./docs/VERIFICATION.md" target="_blank" rel="noopener">Verification ↗</a><span>Made for the creator community</span></div></footer>
+  <dialog id="review-dialog" aria-labelledby="review-title"><form id="review-form"><div class="dialog-heading"><span class="eyebrow">REVIEW CHANGE</span><button type="button" class="icon-button" data-close aria-label="Close review">×</button></div><h2 id="review-title"></h2><p id="review-description"></p><div id="review-body"></div><p id="review-error" class="form-error" role="alert"></p><div class="dialog-actions"><button type="button" class="secondary" data-close>Cancel</button><button type="submit" class="primary">Add to change plan</button></div></form></dialog>
+  <dialog id="batch-dialog" class="wide-dialog" aria-labelledby="batch-title"><form id="batch-form"><div class="dialog-heading"><span class="eyebrow">BATCH REVIEW</span><button type="button" class="icon-button" data-close aria-label="Close batch review">×</button></div><h2 id="batch-title">Review missing declarations</h2><p>These references have a complete trace and agree on a type. Select the declarations you intend to add. Every initial value is shown below.</p><div id="batch-body"></div><p id="batch-error" class="form-error" role="alert"></p><div class="dialog-actions"><button type="button" class="secondary" data-close>Cancel</button><button type="submit" class="primary">Add selected repairs</button></div></form></dialog>
+  <dialog id="detail-dialog" class="wide-dialog" aria-labelledby="detail-title"><div class="dialog-heading"><span class="eyebrow" id="detail-eyebrow">REFERENCE EVIDENCE</span><button class="icon-button" data-close aria-label="Close details">×</button></div><h2 id="detail-title"></h2><div id="detail-body"></div></dialog>
+  <dialog id="about-dialog" aria-labelledby="about-title"><div class="dialog-heading"><span class="eyebrow">MILIASTRA FIX · 0.3</span><button class="icon-button" data-close aria-label="Close about">×</button></div><h2 id="about-title">Understand the change.<br>Then make it.</h2><p>Repair missing declarations, rename private variables and edit scalar initial values in server Entity, Item, Status and Class graphs.</p><ul class="about-list"><li>Composite references are evaluated in the caller’s scope. Repairs change the owner declaration, leaving shared composite bodies intact.</li><li>Every finding has evidence. Runtime names, conflicting types, cycles and incomplete dependencies prevent inferred repairs.</li><li>Renames require exclusive direct references. Shared composite names, event listeners and names stored as text elsewhere need manual refactoring.</li><li>Initial values support Entity/null, Integer, Boolean, Float and String. Lists and structures are inspected without guessing their storage.</li><li>Batch review, undo/redo, file comparison and file-bound change plans keep larger edits manageable.</li><li>No uploads, accounts or analytics. Raw files remain in memory until you close or replace them.</li></ul><div class="callout"><strong>Compatibility evidence</strong><p>Editor 7.1.0 passes the Entity scalar repair, rename and initial-value runtime probe. Direct GIA import preserves the tested declarations. Shared-composite runtime, Item/Status/Class runtime and native export/reimport remain pending. See the verification notes for the exact scope.</p></div><p class="credit">Independent creator project. <a href="./docs/VERIFICATION.md" target="_blank" rel="noopener">Verification notes ↗</a></p><p class="credit">Shortcuts: Ctrl/Cmd+O open file · Ctrl/Cmd+Z undo · Ctrl/Cmd+Shift+Z redo · / search · Esc close dialog.</p></dialog>
+</body>
+</html>

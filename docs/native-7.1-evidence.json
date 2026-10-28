@@ -1,0 +1,214 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-23",
+  "toolVersion": "0.2.0",
+  "editorVersion": "7.1.0",
+  "scope": "Disposable Entity graph qualification; no whole-stage or other-owner runtime guarantee.",
+  "reproduction": {
+    "date": "2026-10-28",
+    "toolVersion": "0.3.0",
+    "scalarProbePatchedGiaByteIdentical": true,
+    "ownerProbeCandidateByteIdentical": true,
+    "note": "The same inputs and operations produce byte-identical outputs, so the runtime result applies to 0.3.0 output for this batch."
+  },
+  "scalarProbe": {
+    "runId": "cca62f28-21cb-4c04-8ce3-24587666dda6",
+    "state": "succeeded",
+    "graphSha256": "18213d561e8633dd12d78ca43e344fde705ea18c405236b3e1030aac433b09a1",
+    "probeSourceSha256":"b94132148c7767a175f6056185e7505c2b82721b862cadd3cf48a372112cb91b",
+    "operations": {
+      "missingDeclarations": [
+        "Entity/null",
+        "Integer/zero",
+        "Boolean/false",
+        "Float/zero",
+        "String/empty"
+      ],
+      "rename": {
+        "from": "ExistingScore",
+        "to": "QualifiedScore",
+        "value": 17
+      },
+      "initialValues": {
+        "EditedInt": -2147483648,
+        "EditedBool": true,
+        "EditedFloat": 1.5,
+        "EditedText": "MF_TEXT"
+      }
+    },
+    "assertions": {
+      "passed": true,
+      "met": 15,
+      "of": 15,
+      "results": [
+        {
+          "expect": "print \"MF_BEGIN\"",
+          "met": true,
+          "t": 0
+        },
+        {
+          "expect": "print \"MF_RENAME_OK\"",
+          "met": true,
+          "t": 0
+        },
+        {
+          "expect": "print \"MF_INT_OK\"",
+          "met": true,
+          "t": 0
+        },
+        {
+          "expect": "print \"MF_BOOL_OK\"",
+          "met": true,
+          "t": 0
+        },
+        {
+          "expect": "print \"MF_FLOAT_OK\"",
+          "met": true,
+          "t": 0
+        },
+        {
+          "expect": "print \"MF_STRING_OK\"",
+          "met": true,
+          "t": 0
+        },
+        {
+          "expect": "print \"MF_ENTITY_NULL_OK\"",
+          "met": true,
+          "t": 0
+        },
+        {
+          "expect": "print \"MF_ENTITY_WRITE_OK\"",
+          "met": true,
+          "t": 0
+        },
+        {
+          "expect": "print \"MF_EDIT_INT_OK\"",
+          "met": true,
+          "t": 0
+        },
+        {
+          "expect": "print \"MF_EDIT_BOOL_OK\"",
+          "met": true,
+          "t": 0
+        },
+        {
+          "expect": "print \"MF_EDIT_FLOAT_OK\"",
+          "met": true,
+          "t": 0
+        },
+        {
+          "expect": "print \"MF_EDIT_STRING_OK\"",
+          "met": true,
+          "t": 0
+        },
+        {
+          "expect": "print \"MF_DONE\"",
+          "met": true,
+          "t": 0
+        },
+        {
+          "expect": "no print \"MF_FAIL\"",
+          "met": true
+        },
+        {
+          "expect": "no fault in a client script",
+          "met": true
+        }
+      ],
+      "note": "Everything expected was printed, in order. That is what the level said of itself: look at the screenshots for what the player sees."
+    },
+    "prints": [
+      {
+        "t": 0,
+        "graphId": "1073741825",
+        "text": "MF_BEGIN"
+      },
+      {
+        "t": 0,
+        "graphId": "1073741825",
+        "text": "MF_RENAME_OK"
+      },
+      {
+        "t": 0,
+        "graphId": "1073741825",
+        "text": "MF_INT_OK"
+      },
+      {
+        "t": 0,
+        "graphId": "1073741825",
+        "text": "MF_BOOL_OK"
+      },
+      {
+        "t": 0,
+        "graphId": "1073741825",
+        "text": "MF_FLOAT_OK"
+      },
+      {
+        "t": 0,
+        "graphId": "1073741825",
+        "text": "MF_STRING_OK"
+      },
+      {
+        "t": 0,
+        "graphId": "1073741825",
+        "text": "MF_ENTITY_NULL_OK"
+      },
+      {
+        "t": 0,
+        "graphId": "1073741825",
+        "text": "MF_ENTITY_WRITE_OK"
+      },
+      {
+        "t": 0,
+        "graphId": "1073741825",
+        "text": "MF_EDIT_INT_OK"
+      },
+      {
+        "t": 0,
+        "graphId": "1073741825",
+        "text": "MF_EDIT_BOOL_OK"
+      },
+      {
+        "t": 0,
+        "graphId": "1073741825",
+        "text": "MF_EDIT_FLOAT_OK"
+      },
+      {
+        "t": 0,
+        "graphId": "1073741825",
+        "text": "MF_EDIT_STRING_OK"
+      },
+      {
+        "t": 0,
+        "graphId": "1073741825",
+        "text": "MF_DONE"
+      }
+    ],
+    "screenshotsReviewed": [
+      3,
+      6
+    ],
+    "nativeSave": {
+      "allTenVariableNamesTypesValuesPreserved": true,
+      "byteIdenticalGraph": false,
+      "graphSha256": "83ca454220653c6ea8f50d21c2ab4e032434f5f9d194da786a3ab9a8c4e691ae"
+    }
+  },
+  "giaImport": {
+    "status": "accepted-and-saved",
+    "method": "Official asset manager, Entity node graph category.",
+    "sameInputGraphSha256": "18213d561e8633dd12d78ca43e344fde705ea18c405236b3e1030aac433b09a1",
+    "allTenVariableNamesTypesValuesPreserved": true,
+    "byteIdenticalGraph": false,
+    "nativeGraphSha256": "2359762fedffb870fef67524ffaa18e26a0b0ad46d37aa72be0f51ad180f70b0",
+    "runtimeTest": "not-run"
+  },
+  "pending": [
+    "Native GIA export/reimport and execution of the re-export",
+    "Shared composite caller-scope runtime test (prepared)",
+    "Item, Status and Class owner runtime tests",
+    "Creator review of real-stage missing-name intent/defaults"
+  ],
+  "limitation": "An interrupted native export attempt is not counted. No performance or published durability claim.",
+  "files": "Original stages remained read-only. Raw files, screenshots, account identifiers and absolute paths are intentionally excluded."
+}
