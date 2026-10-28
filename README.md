@@ -41,9 +41,9 @@ Lists, structures and other types are inspected; the tool does not synthesize th
 
 A missing declaration may be a typo, and the intended initial value cannot be inferred from a type alone. Review names and defaults before accepting them. Editing a declaration's initial value does not migrate existing saved data; exposed per-entity overrides may also take precedence.
 
-Runtime-computed names remain unresolved. Unknown dependencies, recursion, conflicting metadata and scan limits stop inferred repairs. A graph-variable-change listener prevents automatic renaming because downstream comparisons may use the old name. A rename is also refused when another node stores the name as text, which the rename would leave unchanged. External Lua/scripts are not analyzed.
+Runtime-computed names remain unresolved. Unknown dependencies, recursion, conflicting metadata and scan limits stop inferred repairs. A graph-variable-change listener prevents automatic renaming because downstream comparisons may use the old name. A rename is also refused when another node stores the name as text, which the rename would leave unchanged. Entity custom-variable names are a separate namespace and do not count. External Lua/scripts are not analyzed.
 
-Graph-variable types come from the file itself: each Get/Set node records its value type, which must agree with the kernel types observed in editor-saved stages. Nodes are shown by index and type number.
+Graph-variable types come from the file itself: each Get/Set node records its value type, which must agree with the kernel types observed in editor-saved stages. Nodes that appear in messages are labelled with their official editor names, matched to type numbers by pin layout; others are shown by index and type number.
 
 This is a focused **graph-variable workbench**, not a complete stage validator. Informational unused variables and uncalled composites are not deleted. Timer/signal renaming, geometry editing, saved-player-data migration and automatic gameplay logic changes are outside this release.
 

@@ -173,3 +173,12 @@ test('text stored by another node blocks renaming only the variable it names', (
   assert.throws(()=>patch(bytes,[{kind:'rename',graph:g.key,name:'Lives',to:'Hearts'}]),/cannot be renamed/);
   assert.equal(first(patch(bytes,[{kind:'rename',graph:g.key,name:'Coins',to:'Gold'}]).bytes).variables.some(v=>v.name==='Gold'),true);
 });
+test('custom-variable names are a separate namespace; known nodes are labelled', () => {
+  const customName=(id,shell,text)=>join([simpleNode(id,shell),f(4,2,join([f(1,2,sig(3,1)),f(3,2,stringValue(text))]))]);
+  for (const shell of [22,50]) {
+    const bytes=file({nodes:[variableNode(1,'Lives',3,'Set'),customName(5,shell,'Lives')],variables:[declaration('Lives',3)]});
+    assert.equal(first(bytes).variables[0].renameable,true);
+  }
+  const textElsewhere=file({nodes:[variableNode(1,'Lives',3,'Set'),customName(5,22,'Other'),join([simpleNode(6,22),f(4,2,join([f(1,2,sig(3,2)),f(3,2,stringValue('Lives'))]))])],variables:[declaration('Lives',3)]});
+  assert.match(first(textElsewhere).variables[0].renameReasons.join(' '),/Set Custom Variable #6 \(type 22\) stores this name as text/);
+});

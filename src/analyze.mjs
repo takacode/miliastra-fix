@@ -5,9 +5,17 @@ import { parseDocument, locatorKey, signatureKey, endpointKey, child, serverServ
 
 // Built-in system nodes that address graph variables by name.
 const SET_VARIABLE = 323, GET_VARIABLE = 337, VARIABLE_CHANGED = 351;
+// Entity custom variables are a separate namespace; their name input (data slot 1) is not a graph-variable name.
+const SET_CUSTOM_VARIABLE = 22, GET_CUSTOM_VARIABLE = 50;
+// Official editor names (Node Introduction › Server Nodes), matched to type numbers by each node's pin layout.
+const NODE_NAMES = {
+  18: 'Get Local Variable', [SET_CUSTOM_VARIABLE]: 'Set Custom Variable', [GET_CUSTOM_VARIABLE]: 'Get Custom Variable',
+  [SET_VARIABLE]: 'Set Node Graph Variable', [GET_VARIABLE]: 'Get Node Graph Variable', [VARIABLE_CHANGED]: 'When Node Graph Variable Changes',
+};
 const isBuiltIn = l => !!l && l.origin === 10001 && l.service === 20000 && l.kind === 22000;
 const samePin = (a, b) => a.kind === b.kind && a.slot === b.slot;
-const nodeLabel = n => `Node #${n.id} (type ${n.shell.id})`;
+const nodeLabel = n => `${(isBuiltIn(n.shell) && NODE_NAMES[n.shell.id]) || 'Node'} #${n.id} (type ${n.shell.id})`;
+const customVariableName = (node, pin) => [SET_CUSTOM_VARIABLE, GET_CUSTOM_VARIABLE].includes(node.shell.id) && pin.kind === 3 && pin.slot === 1;
 const unique = items => [...new Set(items)];
 const valuePin = node => node.shell.id === GET_VARIABLE ? { kind: 4, slot: 0 } : { kind: 3, slot: 1 };
 const kernelKey = node => `${node.shell.id}:${node.kernel?.id}`;
@@ -147,8 +155,8 @@ export function analyzeDocument(doc) {
         // Text they store is still recorded, because a rename would leave it unchanged.
         if (builtIn) {
           for (const pin of node.pins) {
-            const stored = pin.kind === 3 && storedText(pin);
-            if (stored && !mentions.has(stored)) mentions.set(stored, node.id);
+            const stored = pin.kind === 3 && !customVariableName(node, pin) && storedText(pin);
+            if (stored && !mentions.has(stored)) mentions.set(stored, node);
           }
           continue;
         }
@@ -187,7 +195,7 @@ export function analyzeDocument(doc) {
     for (const gap of gaps.values()) g.findings.push({ kind: gap.code === 'dynamic' ? 'dynamic' : 'coverage', severity: 'info', title: gap.code === 'dynamic' ? 'Runtime-computed variable name' : 'Incomplete reference coverage', detail: gap.reason, node: gap.node, evidence: [{ node: gap.node, graph: gap.graph, graphKey: gap.graphKey, callPaths: [gap.path], occurrences: 1 }], repairable: false });
     for (const v of g.variables) {
       const refs = grouped.get(v.name) || [];
-      v.renameReasons = [...g.renameBlockers, ...(v.public ? ['Exposed variables can have external overrides.'] : []), ...(refs.some(r => !r.direct) ? ['This name is used through a composite or forwarded input. Renaming could affect shared callers.'] : []), ...(mentions.has(v.name) ? [`Node #${mentions.get(v.name)} stores this name as text. Renaming would leave that text unchanged.`] : [])];
+      v.renameReasons = [...g.renameBlockers, ...(v.public ? ['Exposed variables can have external overrides.'] : []), ...(refs.some(r => !r.direct) ? ['This name is used through a composite or forwarded input. Renaming could affect shared callers.'] : []), ...(mentions.has(v.name) ? [`${nodeLabel(mentions.get(v.name))} stores this name as text. Renaming would leave that text unchanged.`] : [])];
       v.renameable = !v.renameReasons.length;
       // A default is a declaration-local value, so unrelated dynamic references do not stop an explicit default edit.
       v.editable = supported && !original.errors.length && v.initial.supported && !v.conflict;

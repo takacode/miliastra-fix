@@ -4,11 +4,13 @@ Status on **2026-10-28**, version **0.3.0**. File-level and browser checks pass.
 
 ## Automated regression checks
 
-**40 tests pass; static build passes.** Tests cover byte-exact no-op output; direct and nested composite owner repairs; preservation of shared bodies; caller input precedence; mutable-name refusal; rename restrictions, including names stored as text by other nodes; listeners; supported server categories; scalar bounds and values; unknown-field preservation; saved-plan binding/revalidation; graph comparisons; value types recorded on nodes, kernel agreement and per-file kernel consistency; and malformed metadata, mappings, identities, type conflicts, recursion and the exact expanded-scan budget boundary.
+**41 tests pass; static build passes.** Tests cover byte-exact no-op output; direct and nested composite owner repairs; preservation of shared bodies; caller input precedence; mutable-name refusal; rename restrictions, including names stored as text by other nodes and the separate custom-variable namespace; listeners; supported server categories; scalar bounds and values; unknown-field preservation; saved-plan binding/revalidation; graph comparisons; value types recorded on nodes, kernel agreement and per-file kernel consistency; and malformed metadata, mappings, identities, type conflicts, recursion and the exact expanded-scan budget boundary.
 
 Five zero-value storage fixtures originated in a native historical **6.2.0** export. The 7.1.0 runtime probe below verifies those five initial values in an Entity owner.
 
 Graph-variable kernel types in `src/kernels.mjs` were recorded by `tools/observe-kernels.mjs` from the three real stages below: 43 kernels across 2,123 Get/Set nodes, each with a single value type. They include every repairable scalar type for both Get and Set.
+
+Node labels come from the official Server Nodes reference. Each labelled type's pin layout in these stages (flow pins, inputs, outputs and value types) matches exactly one documented node: 18 Get Local Variable, 22 Set Custom Variable, 50 Get Custom Variable, 323 Set Node Graph Variable, 337 Get Node Graph Variable and 351 When Node Graph Variable Changes.
 
 ## Real stage checks
 
@@ -24,7 +26,7 @@ All three pass exact no-op round trips and eligible rename/reverse equality with
 
 The large stage's six reviewed-test declarations remove structural missing-name warnings. Their defaults and gameplay intent still need a creator's review, particularly persistence-related names. Test copies are not automatically approved production saves.
 
-Compared with 0.2.0 on the same files, 0.3.0 reports the same findings, coverage, repair candidates and editable initial values, and its repair exports are byte-identical. Rename is now held back for 9 of 109 previously eligible variables (2 in the composite-heavy stage, 7 in the large stage) because another node stores the variable's name as text.
+Compared with 0.2.0 on the same files, 0.3.0 reports the same findings, coverage, repair candidates, editable initial values and rename eligibility (109 variables), and its repair exports are byte-identical. Only message wording differs.
 
 Earlier v0.1 evidence also includes four native GIA assets (136, 159, 36 and 37 nodes), two GIL stages (0 and 114 nodes), and a generated 47-node GIA with exact no-op preservation and rename/reverse equality.
 
